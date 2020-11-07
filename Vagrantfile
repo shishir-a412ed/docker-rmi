@@ -25,11 +25,23 @@ Vagrant.configure("2") do |config|
       sudo chmod +x /usr/local/go
       rm -f go1.14.3.linux-amd64.tar.gz
     fi
+
+    # Install docker-rmi
+    cd /home/vagrant/go/src/github.com/docker-rmi
+    sudo make install
   SHELL
   config.vm.provision "docker" do |d|
-    d.pull_images "ubuntu"
     d.pull_images "traefik"
     d.pull_images "traefik:v2.3.2"
     d.pull_images "traefik:v2.3"
+    d.pull_images "postgres"
+    d.pull_images "postgres:alpine"
+    d.pull_images "postgres:9.6.19-alpine"
+    d.pull_images "ubuntu"
+    d.pull_images "ubuntu:16.04"
+    d.pull_images "ubuntu:18.04"
+    d.pull_images "redis"
+    d.pull_images "redis:buster"
+    d.pull_images "redis:alpine3.12"
   end
 end

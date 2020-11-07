@@ -1,9 +1,6 @@
 BINARY ?= docker-rmi
 BINDIR ?= $(DESTDIR)/usr/local/bin
-ifndef $(GOLANG)
-    GOLANG=$(shell which go)
-    export GOLANG
-endif
+GOLANG ?= /usr/local/go/bin/go
 
 .PHONY: build
 build: main.go
