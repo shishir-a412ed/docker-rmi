@@ -9,13 +9,11 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/home/vagrant/go/src/github.com/docker-rmi"
   config.ssh.extra_args = ["-t", "cd /home/vagrant/go/src/github.com/docker-rmi; bash --login"]
   config.vm.provider "virtualbox" do |vb|
-      vb.name = "containerd-linux"
+      vb.name = "docker-rmi"
       vb.cpus = 2
       vb.memory = 2048
   end
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt-get install -y unzip gcc runc
     echo "export GOPATH=/home/vagrant/go" >> /home/vagrant/.bashrc
     echo "export PATH=$PATH:/usr/local/go/bin" >> /home/vagrant/.bashrc
     source /home/vagrant/.bashrc
@@ -28,4 +26,10 @@ Vagrant.configure("2") do |config|
       rm -f go1.14.3.linux-amd64.tar.gz
     fi
   SHELL
+  config.vm.provision "docker" do |d|
+    d.pull_images "ubuntu"
+    d.pull_images "traefik"
+    d.pull_images "traefik:v2.3.2"
+    d.pull_images "traefik:v2.3"
+  end
 end
