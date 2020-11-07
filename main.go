@@ -49,7 +49,7 @@ func main() {
 }
 
 func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *sync.WaitGroup) {
-	// docker client SDK only has a {ImageRemove} method, and no method for untagging images.
+	// docker client SDK only has an {ImageRemove} method, and no method for untagging images.
 	// We don't want to forcefully remove an image, if it has multiple tags.
 	// Rather we would just like to untag the tag. If it's the only tag left, we will remove the image.
 	// exec docker CLI due to lack of support from docker client SDK.
