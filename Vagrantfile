@@ -43,5 +43,14 @@ Vagrant.configure("2") do |config|
     d.pull_images "redis"
     d.pull_images "redis:buster"
     d.pull_images "redis:alpine3.12"
+    d.pull_images "node"
+    d.pull_images "node:stretch-slim"
+    d.pull_images "node:slim"
+    d.pull_images "mysql"
+    d.pull_images "mysql:8.0.22"
+    d.pull_images "mysql:8.0"
+    d.pull_images "mariadb"
+    d.pull_images "mariadb:focal"
+    d.pull_images "mariadb:10.5.7"
   end
 end
