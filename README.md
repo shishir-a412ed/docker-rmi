@@ -42,6 +42,17 @@ $ docker-rmi (This should start the application)
 **Ctrl+C** won't work if you would like to exit in between.<br/>
 If you want to exit before `docker-rmi` completes, just close the tab or terminal.
 
+## Cleanup
+```
+make clean
+```
+This will delete your binary: `docker-rmi`
+
+```
+vagrant destroy
+```
+This will destroy your vagrant VM.
+
 ## Currently supported environments
 
 - macOS Catalina (Version 10.15.5)
