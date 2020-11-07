@@ -30,7 +30,7 @@ func main() {
 			fmt.Printf("Delete: %s (y/n) ", tag)
 			input, err := scanUserInput()
 			if err != nil {
-				log.Fatalln(err)
+				log.Fatalf("Error in scanning user input: %v\n", err)
 			}
 
 			if input == "y" {
@@ -43,9 +43,7 @@ func main() {
 			fmt.Println()
 		}
 	}
-
 	wg.Wait()
-
 }
 
 func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *sync.WaitGroup) {
