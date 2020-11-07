@@ -9,5 +9,5 @@ Remove docker images with a prompt: Press *y* to delete, and *n* to skip deletio
 - Delete docker images with confirmation. Press *y* to delete, and *n* to skip.
 - Images (especially the big ones) gets deleted in the background, so you don't wait, you just move onto the next selection.
 
-<img src="images/docker-rmi.png" width="850" height="475" />
+<img src="images/docker-rmi.png" width="650" height="475" />
 
