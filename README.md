@@ -29,7 +29,7 @@ User: This is awesome!
 ```
 $ git clone git@github.com:shishir-a412ed/docker-rmi.git
 $ cd docker-rmi
-$ sudo make install
+$ sudo make install (You don't need sudo on macOS)
 ```
 
 ## Verify
