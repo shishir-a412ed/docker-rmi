@@ -1,5 +1,8 @@
 # docker-rmi
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/shishir-a412ed/docker-rmi/blob/master/LICENSE)
+[![Release](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/shishir-a412ed/docker-rmi/releases/tag/v1.0.0)
+
 Have too many docker images on your local docker daemon, and not sure which ones to delete?
 
 Remove docker images with a prompt: Press **y** to delete ✅, and **n** to skip deletion ❌.
