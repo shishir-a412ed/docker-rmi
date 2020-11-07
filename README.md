@@ -2,11 +2,11 @@
 
 Have too many docker images on your local docker daemon, and not sure which ones to delete?
 
-Remove docker images with a prompt: Press **y** to delete ✅, and **n** to skip deletion.
+Remove docker images with a prompt: Press **y** to delete ✅, and **n** to skip deletion ❌.
 
 ## Key Features
 
-- Delete docker images with confirmation. Press **y** to delete, and **n** to skip.
+- Delete docker images with confirmation. Press **y** to delete ✅, and **n** to skip ❌.
 - Images (especially the big ones) gets deleted in the background, so you don't wait, you just move onto the next selection.
 
 ## Screencast
@@ -38,8 +38,9 @@ $ sudo make install (You don't need sudo on macOS)
 $ which docker-rmi
 $ docker-rmi (This should start the application)
 ```
-**NOTE**: `docker-rmi` switches your terminal to `raw` mode. **Ctrl+C** won't work if you want to exit in between. 
-If you want to exit before `docker-rmi` completes, just close the tab or terminal. 
+**NOTE**: `docker-rmi` switches your terminal to `raw` mode. This is needed to display ✅ and ❌.<br/>
+**Ctrl+C** won't work if you would like to exit in between.<br/>
+If you want to exit before `docker-rmi` completes, just close the tab or terminal.
 
 ## Currently supported environments
 
