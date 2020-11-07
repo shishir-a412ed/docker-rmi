@@ -26,11 +26,7 @@ User: This is awesome!
 
 ## Installation
 
-Make sure your **$GOPATH** is setup correctly.
-
 ```
-$ mkdir -p $GOPATH/src/github.com/shishir-a412ed
-$ cd $GOPATH/src/github.com/shishir-a412ed
 $ git clone git@github.com:shishir-a412ed/docker-rmi.git
 $ cd docker-rmi
 $ sudo make install
@@ -45,4 +41,7 @@ $ docker-rmi (This should start the application)
 
 ## Currently supported environments
 
-macOS Catalina (Version 10.15.5), Ubuntu (>=16.04), Centos, Fedora
+- macOS Catalina (Version 10.15.5)
+- Ubuntu (>=16.04)
+- Centos
+- Fedora
