@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os/exec"
+	"sync"
 
 	"github.com/docker/docker/api/types"
 	"github.com/moby/moby/client"
@@ -22,6 +24,7 @@ func main() {
 		log.Fatalf("Error in image list: %v\n", err)
 	}
 
+	var wg sync.WaitGroup
 	for _, image := range images {
 		for _, tag := range image.RepoTags {
 			fmt.Printf("Delete: %s (y/n) ", tag)
@@ -32,6 +35,8 @@ func main() {
 
 			if input == "y" {
 				fmt.Printf("\u2705")
+				wg.Add(1)
+				go removeDockerImage(cli, ctx, tag, &wg)
 			} else {
 				fmt.Printf("\u274C")
 			}
@@ -39,6 +44,20 @@ func main() {
 		}
 	}
 
+	wg.Wait()
+
+}
+
+func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *sync.WaitGroup) {
+	// docker client SDK only has a {ImageRemove} method, and no method for untagging images.
+	// We don't want to forcefully remove an image, if it has multiple tags.
+	// Rather we would just like to untag the tag. If it's the only tag left, we will remove the image.
+	// exec docker CLI due to lack of support from docker client SDK.
+	cmd := exec.Command("docker", "rmi", "--force", fmt.Sprintf("%s", tag))
+	if err := cmd.Run(); err != nil {
+		log.Fatalln(err)
+	}
+	wg.Done()
 }
 
 // Scan user input (y/n) without newline '\n' character.
@@ -54,6 +73,5 @@ func scanUserInput() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	return string(b), nil
 }
