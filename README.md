@@ -11,3 +11,6 @@ Remove docker images with a prompt: Press *y* to delete, and *n* to skip deletio
 
 <img src="images/docker-rmi.png" width="650" height="475" />
 
+## Screencast
+[![asciicast](https://asciinema.org/a/371122.svg)](https://asciinema.org/a/371122)
+
