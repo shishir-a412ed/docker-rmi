@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"sync"
 
 	"github.com/docker/docker/api/types"
@@ -39,6 +40,7 @@ func main() {
 				log.Fatalf("Error in scanning user input: %v\n", err)
 			}
 
+			input = strings.ToLower(input)
 			if input == "y" {
 				fmt.Printf("\u2705")
 				wg.Add(1)
