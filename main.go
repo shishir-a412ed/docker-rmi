@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"sync"
 
@@ -22,6 +23,11 @@ func main() {
 	images, err := cli.ImageList(ctx, types.ImageListOptions{})
 	if err != nil {
 		log.Fatalf("Error in image list: %v\n", err)
+	}
+
+	if len(images) == 0 {
+		fmt.Println("No available docker images to remove. Exiting...")
+		os.Exit(0)
 	}
 
 	var wg sync.WaitGroup
