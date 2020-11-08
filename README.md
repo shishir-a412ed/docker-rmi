@@ -41,9 +41,6 @@ $ sudo make install (You don't need sudo on macOS)
 $ which docker-rmi
 $ docker-rmi (This should start the application)
 ```
-**NOTE**: `docker-rmi` switches your terminal to `raw` mode. This is needed to display ✅ and ❌.<br/>
-**Ctrl+C** won't work if you would like to exit in between.<br/>
-If you want to exit before `docker-rmi` completes, just close the tab or terminal.
 
 ## Cleanup
 ```
