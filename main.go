@@ -6,12 +6,11 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"strings"
 	"sync"
 
 	"github.com/docker/docker/api/types"
+	"github.com/eiannone/keyboard"
 	"github.com/moby/moby/client"
-	"github.com/pkg/term"
 )
 
 func main() {
@@ -31,17 +30,31 @@ func main() {
 		os.Exit(0)
 	}
 
+	if err := keyboard.Open(); err != nil {
+		log.Fatalf("Error in opening terminal in raw mode: %v\n", err)
+	}
+
+	defer func() {
+		if err := keyboard.Close(); err != nil {
+			log.Fatalf("Error in closing terminal in raw mode: %v\n", err)
+		}
+	}()
+
 	var wg sync.WaitGroup
 	for _, image := range images {
 		for _, tag := range image.RepoTags {
 			fmt.Printf("Delete: %s (y/n) ", tag)
-			input, err := scanUserInput()
+			input, key, err := keyboard.GetKey()
 			if err != nil {
 				log.Fatalf("Error in scanning user input: %v\n", err)
 			}
 
-			input = strings.ToLower(input)
-			if input == "y" {
+			if key == keyboard.KeyCtrlC {
+				_ = keyboard.Close()
+				os.Exit(0)
+			}
+
+			if input == 'y' || input == 'Y' {
 				fmt.Printf("\u2705")
 				wg.Add(1)
 				go removeDockerImage(cli, ctx, tag, &wg)
@@ -64,20 +77,4 @@ func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *
 		log.Fatalln(err)
 	}
 	wg.Done()
-}
-
-// Scan user input (y/n) without newline '\n' character.
-func scanUserInput() (string, error) {
-	t, _ := term.Open("/dev/tty")
-	term.RawMode(t)
-
-	defer t.Close()
-	defer t.Restore()
-
-	b := make([]byte, 1)
-	_, err := t.Read(b)
-	if err != nil {
-		return "", err
-	}
-	return string(b), nil
 }
