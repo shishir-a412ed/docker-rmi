@@ -34,11 +34,7 @@ func main() {
 		log.Fatalf("Error in opening terminal in raw mode: %v\n", err)
 	}
 
-	defer func() {
-		if err := keyboard.Close(); err != nil {
-			log.Fatalf("Error in closing terminal in raw mode: %v\n", err)
-		}
-	}()
+	defer closeKeyboard()
 
 	var wg sync.WaitGroup
 	for _, image := range images {
@@ -50,7 +46,7 @@ func main() {
 			}
 
 			if key == keyboard.KeyCtrlC {
-				_ = keyboard.Close()
+				closeKeyboard()
 				os.Exit(0)
 			}
 
@@ -74,7 +70,14 @@ func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *
 	// exec docker CLI due to lack of support from docker client SDK.
 	cmd := exec.Command("docker", "rmi", "--force", fmt.Sprintf("%s", tag))
 	if err := cmd.Run(); err != nil {
+		closeKeyboard()
 		log.Fatalln(err)
 	}
 	wg.Done()
+}
+
+func closeKeyboard() {
+	if err := keyboard.Close(); err != nil {
+		log.Fatalf("Error in closing terminal in raw mode: %v\n", err)
+	}
 }
