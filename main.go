@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/eiannone/keyboard"
 	"github.com/moby/moby/client"
 )
@@ -20,7 +21,10 @@ func main() {
 		log.Fatalf("Error creating docker client: %v\n", err)
 	}
 
-	images, err := cli.ImageList(ctx, types.ImageListOptions{})
+	noDanglingfilters := filters.NewArgs()
+	noDanglingfilters.Add("dangling", "false")
+
+	images, err := cli.ImageList(ctx, types.ImageListOptions{Filters: noDanglingfilters})
 	if err != nil {
 		log.Fatalf("Error in image list: %v\n", err)
 	}
@@ -60,7 +64,47 @@ func main() {
 			fmt.Println()
 		}
 	}
+
+	// Check and remove dangling images.
+	danglingFilters := filters.NewArgs()
+	danglingFilters.Add("dangling", "true")
+
+	images, err = cli.ImageList(ctx, types.ImageListOptions{Filters: danglingFilters})
+	if err != nil {
+		log.Fatalf("Error in listing dangling images: %v\n", err)
+	}
+
+	if len(images) > 0 {
+		removeDanglingImages(images)
+	}
+
 	wg.Wait()
+}
+
+func removeDanglingImages(images []types.ImageSummary) {
+	fmt.Print("Delete: dangling <none>:<none> images (y/n) ")
+	input, key, err := keyboard.GetKey()
+	if err != nil {
+		log.Fatalf("Error in scanning user input: %v\n", err)
+	}
+
+	if key == keyboard.KeyCtrlC {
+		closeKeyboard()
+		os.Exit(0)
+	}
+	if input == 'y' || input == 'Y' {
+		fmt.Printf("\u2705")
+		for _, image := range images {
+			cmd := exec.Command("docker", "rmi", "--force", fmt.Sprintf("%s", image.ID))
+			if err := cmd.Run(); err != nil {
+				closeKeyboard()
+				log.Fatalln(err)
+			}
+		}
+	} else {
+		fmt.Printf("\u274C")
+	}
+	fmt.Println()
 }
 
 func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *sync.WaitGroup) {
