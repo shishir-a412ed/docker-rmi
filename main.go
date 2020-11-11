@@ -98,7 +98,7 @@ func removeDanglingImages(images []types.ImageSummary) {
 			cmd := exec.Command("docker", "rmi", "--force", fmt.Sprintf("%s", image.ID))
 			if err := cmd.Run(); err != nil {
 				closeKeyboard()
-				log.Fatalln(err)
+				log.Fatalf("Error in removing dangling image: %v\n", err)
 			}
 		}
 	} else {
@@ -115,7 +115,7 @@ func removeDockerImage(cli *client.Client, ctx context.Context, tag string, wg *
 	cmd := exec.Command("docker", "rmi", "--force", fmt.Sprintf("%s", tag))
 	if err := cmd.Run(); err != nil {
 		closeKeyboard()
-		log.Fatalln(err)
+		log.Fatalf("Error in removing docker image: %v\n", err)
 	}
 	wg.Done()
 }
